@@ -46,6 +46,7 @@ zhenqiang	bd@qq.com	  520	      20:20:20.000000
         for a in range(5):
             result = cursor.fetchone()
             print(result)
+
  """
  结果如下：
 {u'user': u'jinyu', u'email': u'520@qq.com'}
@@ -63,6 +64,7 @@ zhenqiang	bd@qq.com	  520	      20:20:20.000000
         cursor.execute(sql)
         #同样需要执行提交操作
         connection.commit()
+
 """
 执行操作后， 数据库结果如下：
  user      email       password  time
@@ -73,5 +75,6 @@ zhenqiang	bd@qq.com	  520	      20:20:20.000000
 zhenqiang	bd@qq.com	  520	      20:20:20.000000
 """
 
+print "update finish"
 finally:
     connection.close()
