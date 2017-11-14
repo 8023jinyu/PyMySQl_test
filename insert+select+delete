@@ -1,0 +1,77 @@
+#!usr/bin/python
+# -*-coding:utf-8-*-
+
+import pymysql.cursors
+
+# Connect to the database
+connection = pymysql.connect(host='localhost',
+                             user='root',
+                             password='8023yjy',
+                             db='test',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+
+try:
+    with connection.cursor() as cursor:
+        # 在database指定的table use中插入记录
+        for _ in range(5):
+            sql_1 = """INSERT INTO `use` (`user`,`email`, `password`, `time`)
+                       VALUE('jinyu', '520@qq.com', '520', '131420')"""
+            sql_2 = """INSERT INTO `use` (`user`,`email`, `password`, `time`)
+                       VALUE('zhenqiang', 'bd@qq.com', '520', '202020')"""
+            cursor.execute(sql_1)
+            cursor.execute(sql_2)
+        # 需要通过connection提交才能保存修改的记录
+        connection.commit()
+"""
+数据库插入情况如下：
+user      email       password  time
+jinyu	    520@qq.com	520	      13:14:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+jinyu	    520@qq.com	520	      13:14:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+jinyu	    520@qq.com	520	      13:14:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+jinyu	    520@qq.com	520	      13:14:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+jinyu	    520@qq.com	520	      13:14:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+"""
+        
+    with connection.cursor() as cursor:
+        # 执行查询操作
+        sql = "SELECT `user`, `email` FROM `use` WHERE `time`=  '131420'"
+        cursor.execute(sql)
+        # fetchone 显示检索结果集中的一条记录，fetchall 显示所有结果
+        for a in range(5):
+            result = cursor.fetchone()
+            print(result)
+ """
+ 结果如下：
+{u'user': u'jinyu', u'email': u'520@qq.com'}
+{u'user': u'jinyu', u'email': u'520@qq.com'}
+{u'user': u'jinyu', u'email': u'520@qq.com'}
+{u'user': u'jinyu', u'email': u'520@qq.com'}
+{u'user': u'jinyu', u'email': u'520@qq.com'}
+ """
+ 
+     with connection.cursor() as cursor:
+        # 执行删除记录操作
+        sql = """DELETE FROM `use`
+                 WHERE `user`= 'jinyu' AND `email`= '520@qq.com'
+              """
+        cursor.execute(sql)
+        #同样需要执行提交操作
+        connection.commit()
+"""
+执行操作后， 数据库结果如下：
+ user      email       password  time
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+zhenqiang	bd@qq.com	  520	      20:20:20.000000
+"""
+
+finally:
+    connection.close()
