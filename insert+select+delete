@@ -75,6 +75,5 @@ zhenqiang	bd@qq.com	  520	      20:20:20.000000
 zhenqiang	bd@qq.com	  520	      20:20:20.000000
 """
 
-print "update finish"
 finally:
     connection.close()
